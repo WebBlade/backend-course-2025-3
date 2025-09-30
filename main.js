@@ -12,6 +12,8 @@ program
   .requiredOption("-i, --input <file>", "Input file path")
   .option("-o, --output <file>", "Output file path")
   .option("-d, --display", "Display into console")
+  .option("-v, --variety", "Flower kind")
+  .option("-l, --length <number>", "Display only entries with petal.length greater than this value", parseFloat)
 
 program.parse(process.argv);
 
@@ -38,10 +40,22 @@ try {
     process.exit(1)
 }
 
+let outputData = jsonData
+
+    if(options.length !== undefined && !isNaN(options.length)){
+        outputData = outputData.filter(item => Number(item["petal.length"]) > options.length)
+    }
+
 if(options.output){
-    fs.writeFileSync(options.output, JSON.stringify(jsonData, null, 2), "utf-8")
+    fs.writeFileSync(options.output, JSON.stringify(outputData, null, 2), "utf-8")
 }
 
 if(options.display){
-    console.log(JSON.stringify(jsonData, null, 2))
+    
+
+    outputData.forEach(item => {
+        let line = `${item["petal.length"]} ${item["petal.width"]}`;
+        if (options.variety) line += ` ${item.variety}`;
+        console.log(line);
+    });
 }
