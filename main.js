@@ -9,7 +9,7 @@ program
   .version("1.0.0");
 
 program
-  .requiredOption("-i, --input <file>", "Input file path")
+  .option("-i, --input [file]", "Input file path")
   .option("-o, --output <file>", "Output file path")
   .option("-d, --display", "Display into console")
   .option("-v, --variety", "Flower kind")
@@ -19,8 +19,13 @@ program.parse(process.argv);
 
 const options = program.opts();
 
-if(!options.input){
-    console.error("Please, specify input file")
+if (options.input === true || !options.input) {
+  console.error("Please, specify input file");
+  process.exit(1);
+}
+
+if(!fs.existsSync(options.input)){
+    console.error("Cannot find input file")
     process.exit(1)
 }
 
@@ -29,10 +34,7 @@ if (process.argv.length === 2) {
     process.exit(1);
 }
 
-if(!fs.existsSync(options.input)){
-    console.error("Cannot find input file")
-    process.exit(1)
-}
+
 
 let jsonData;
 
