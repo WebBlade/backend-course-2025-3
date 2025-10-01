@@ -42,12 +42,18 @@ try {
 
 let outputData = jsonData
 
-    if(options.length !== undefined && !isNaN(options.length)){
-        outputData = outputData.filter(item => Number(item["petal.length"]) > options.length)
-    }
+if(options.length !== undefined && !isNaN(options.length)){
+    outputData = outputData.filter(item => Number(item["petal.length"]) > options.length)
+}
 
-if(options.output){
-    fs.writeFileSync(options.output, JSON.stringify(outputData, null, 2), "utf-8")
+if (options.output) {
+    const linesToWrite = outputData.map(item => {
+        let line = `${item["petal.length"]} ${item["petal.width"]}`;
+        if (options.variety) line += ` ${item.variety}`;
+        return line;
+    }).join("\n");
+
+    fs.writeFileSync(options.output, linesToWrite, "utf-8");
 }
 
 if(options.display){
