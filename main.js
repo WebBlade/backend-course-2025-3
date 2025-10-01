@@ -29,12 +29,6 @@ if(!fs.existsSync(options.input)){
     process.exit(1)
 }
 
-if (process.argv.length === 2) {
-    console.error("Please, specify input file");
-    process.exit(1);
-}
-
-
 
 let jsonData;
 
